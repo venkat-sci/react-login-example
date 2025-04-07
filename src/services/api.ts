@@ -1,9 +1,14 @@
-import axios from 'axios';
-import { useAuthStore } from '../store/authStore';
-import { LoginCredentials, AuthResponse, User } from '../types/auth';
+import axios from "axios";
+import { useAuthStore } from "../store/authStore";
+import { LoginCredentials, AuthResponse, User } from "../types/auth";
 
+// ? Login Credentials
+// {
+//     "email": "eve.holt@reqres.in",
+//     "password": "cityslicka"
+// }
 const api = axios.create({
-  baseURL: 'https://reqres.in/api',
+  baseURL: "https://reqres.in/api",
 });
 
 api.interceptors.request.use((config) => {
@@ -14,13 +19,15 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const loginUser = async (credentials: LoginCredentials): Promise<AuthResponse> => {
-  const response = await api.post('/login', credentials);
+export const loginUser = async (
+  credentials: LoginCredentials
+): Promise<AuthResponse> => {
+  const response = await api.post("/login", credentials);
   return response.data;
 };
 
 export const fetchUsers = async (): Promise<User[]> => {
-  const response = await api.get('/users');
+  const response = await api.get("/users");
   return response.data.data;
 };
 

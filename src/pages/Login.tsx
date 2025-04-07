@@ -1,15 +1,15 @@
-import { useForm } from 'react-hook-form';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Lock, Mail } from 'lucide-react';
-import toast from 'react-hot-toast';
-import { loginUser } from '../services/api';
-import { useAuthStore } from '../store/authStore';
-import type { LoginCredentials } from '../types/auth';
-import { useEffect } from 'react';
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { Lock, Mail } from "lucide-react";
+import toast from "react-hot-toast";
+import { loginUser } from "../services/api";
+import { useAuthStore } from "../store/authStore";
+import type { LoginCredentials } from "../types/auth";
+import { useEffect } from "react";
 
 export default function Login() {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const { token, setToken } = useAuthStore();
   const {
     register,
@@ -20,7 +20,7 @@ export default function Login() {
   useEffect(() => {
     // Redirect to dashboard if already logged in
     if (token) {
-      navigate('/dashboard', { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   }, [token, navigate]);
 
@@ -28,10 +28,10 @@ export default function Login() {
     try {
       const response = await loginUser(data);
       setToken(response.token);
-      toast.success('Login successful!');
-      navigate('/dashboard');
+      toast.success("Login successful!");
+      navigate("/dashboard");
     } catch (error) {
-      toast.error('Invalid email or password');
+      toast.error("Invalid email or password" + error);
     }
   };
 
@@ -54,21 +54,25 @@ export default function Login() {
                   <Mail className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  {...register('email', {
-                    required: 'Email is required',
+                  {...register("email", {
+                    required: "Email is required",
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Invalid email address',
+                      message: "Invalid email address",
                     },
                   })}
                   id="email"
+                  name="email"
+                  autoComplete="email"
                   type="email"
                   className="appearance-none rounded-lg relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
                 />
               </div>
               {errors.email && (
-                <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.email.message}
+                </p>
               )}
             </div>
             <div>
@@ -80,21 +84,25 @@ export default function Login() {
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  {...register('password', {
-                    required: 'Password is required',
+                  {...register("password", {
+                    required: "Password is required",
                     minLength: {
                       value: 6,
-                      message: 'Password must be at least 6 characters',
+                      message: "Password must be at least 6 characters",
                     },
                   })}
                   id="password"
+                  name="password"
+                  autoComplete="current-password"
                   type="password"
                   className="appearance-none rounded-lg relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
                 />
               </div>
               {errors.password && (
-                <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.password.message}
+                </p>
               )}
             </div>
           </div>
@@ -105,7 +113,7 @@ export default function Login() {
               disabled={isSubmitting}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Signing in...' : 'Sign in'}
+              {isSubmitting ? "Signing in..." : "Sign in"}
             </button>
           </div>
         </form>
